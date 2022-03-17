@@ -7,11 +7,16 @@
       <h2>Carb Manager Dev Assignment</h2>
       <p>See the README file for assignment requirements.</p>
 
-      <ul>
-        <li v-for="recipe in recipes" :key="recipe" class="premium-recipe">
-          <PremiumRecipeCard :id="recipe" />
+      <ul v-if="!loadingError">
+        <li
+          v-for="recipe in recipes"
+          :key="recipe.title"
+          class="premium-recipe"
+        >
+          <PremiumRecipeCard :id="recipe.title" />
         </li>
       </ul>
+      <div v-else>{{ loadingError }}</div>
     </div>
   </div>
 </template>
@@ -27,8 +32,22 @@ export default {
   },
 
   data: () => ({
-    recipes: ["Premium", "recipes", "list", "goes", "here"]
-  })
+    recipes: [],
+    loadingError: null
+  }),
+
+  async mounted() {
+    try {
+      const apiUrl = process.env.VUE_APP_BASE_API_URL;
+      const res = await fetch(`${apiUrl}/recipes`);
+      const recipes = await res.json();
+
+      this.recipes = recipes;
+    } catch (err) {
+      this.loadingError =
+        "Something wrong happend while loading data, try refereshing the page. If the problem persists please contact the site's admins";
+    }
+  }
 };
 </script>
 

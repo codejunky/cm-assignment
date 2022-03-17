@@ -5,7 +5,6 @@
   "scripts": {
     "json-server": "json-server  ./server/db.js --watch --ro --delay 200 --middlewares ./server/middleware.js",
     "serve": "concurrently \"yarn json-server\" \"vue-cli-service serve\"",
-    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
