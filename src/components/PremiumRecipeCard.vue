@@ -7,6 +7,15 @@
           alt="Meal"
         />
       </div>
+      <div class="overlay">
+        <div class="like-btn">
+          <img src="../assets/heart.svg" alt="Like button" />
+        </div>
+        <div class="premium-badge">
+          <img src="../assets/trophy.svg" alt="Trophy Icon" />
+          <span class="badge-label">Premium Recipe</span>
+        </div>
+      </div>
     </div>
     <div class="card-body">
       <h4 class="meal-title">
@@ -79,7 +88,49 @@ export default {
 }
 
 .card-header {
+  position: relative;
   height: 200px;
+}
+
+.overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.overlay:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.like-btn {
+  align-self: end;
+  margin: 16px;
+}
+
+.premium-badge {
+  display: flex;
+  align-items: center;
+  align-self: start;
+  margin: 8px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 0 8px;
+  border-radius: 10px;
+}
+
+.badge-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 12px;
+  letter-spacing: -0.2px;
+  color: #fff;
+  margin-left: 4px;
 }
 
 .meal-img {
