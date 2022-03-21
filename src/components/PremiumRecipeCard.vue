@@ -1,15 +1,13 @@
 <template>
-  <div class="card-container">
+  <div class="card-container" @click="cardClickHandler(recipe.title)">
     <div class="card-header">
       <div class="meal-img">
-        <img
-          src="https://images.carbmanager.com/iYKrSEf7P6EAGx3desxGmcPJTVea2lJoBiXom24tevA/resize:fit:535/L2Fzc2V0cy5jYXJibWFuYWdlci5jb20vby91c2VyJTJGNGdkMlJoRVpqM2NGR1NKWDVuYjhFQzROWjBEMiUyRmltYWdlcyUyRmJiNmExNjY4LTU1NDMtNGE3Ny1hMDQ0LWQ0ODVhM2U0ZDMwNS5qcGc_YWx0PW1lZGlh"
-          alt="Meal"
-        />
+        <img :src="recipe.images[0].url" alt="Meal" />
       </div>
       <div class="overlay">
         <div class="like-btn">
-          <img src="../assets/heart.svg" alt="Like button" />
+          <img v-if="!liked" src="../assets/heart.svg" alt="Heart Icon" />
+          <img v-else src="../assets/heart-filled.svg" alt="Green Heart Icon" />
         </div>
         <div class="premium-badge">
           <img src="../assets/trophy.svg" alt="Trophy Icon" />
@@ -19,32 +17,32 @@
     </div>
     <div class="card-body">
       <h4 class="meal-title">
-        Low Carb Thai Chicken Curry With Coconut Cauliflower Rice
+        {{ recipe.title }}
       </h4>
       <div class="meal-rating">
         <StarRating
           :increment="0.5"
           :star-size="13"
           :read-only="true"
-          :rating="3.5"
+          :rating="recipe.rating.score"
           active-color="#fda01e"
           text-class="vue-rating-text"
         />
-        <div class="ratings-count">
-          200 ratings
-        </div>
+        <div class="ratings-count">{{ recipe.rating.count }} ratings</div>
       </div>
       <div class="meal-info">
         <div class="info-wrapper">
           <img src="../assets/clock.svg" alt="Clock Icon" />
-          <span class="info-label">24 min</span>
+          <span class="info-label">
+            {{ duration }}
+          </span>
         </div>
         <div class="info-wrapper">
           <img src="../assets/flame.svg" alt="Clock Icon" />
-          <span class="info-label">489 Calories</span>
+          <span class="info-label">{{ energy }}</span>
         </div>
         <div class="nutrients-wrapper">
-          <RecipeNutrients />
+          <RecipeNutrients :nutrientDetails="recipe.details" />
         </div>
       </div>
     </div>
@@ -55,6 +53,9 @@
 import StarRating from "vue-star-rating";
 import RecipeNutrients from "./RecipeNutrients.vue";
 
+import formatDuration from "@/utils/formatDuration";
+import formatEnergy from "@/utils/formatEnergy";
+
 export default {
   name: "PremiumRecipeCard",
   components: {
@@ -62,9 +63,30 @@ export default {
     StarRating
   },
   props: {
-    id: {
-      type: String,
+    recipe: {
+      type: Object,
       required: true
+    },
+    user: {
+      type: Object,
+      required: true
+    },
+    liked: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    duration() {
+      return formatDuration(this.recipe.preparationTimeMinutes);
+    },
+    energy() {
+      return formatEnergy(this.recipe.details, this.user.energyUnits);
+    }
+  },
+  methods: {
+    cardClickHandler(title) {
+      console.log(`Card: "${title}" was clicked!`);
     }
   }
 };
@@ -85,6 +107,7 @@ export default {
   border-radius: 12px;
   box-shadow: 0px 13px 35px rgba(0, 30, 47, 0.1);
   overflow: hidden;
+  cursor: pointer;
 }
 
 .card-header {
@@ -101,7 +124,6 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  cursor: pointer;
 }
 
 .overlay:hover {
@@ -119,7 +141,7 @@ export default {
   align-self: start;
   margin: 8px;
   height: 20px;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.4);
   padding: 0 8px;
   border-radius: 10px;
 }
@@ -147,6 +169,11 @@ export default {
 }
 
 .meal-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+
   font-size: 18px;
   font-weight: 700;
   line-height: 20px;

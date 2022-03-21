@@ -2,22 +2,35 @@
   <div class="container">
     <div class="nutrient-wrapper">
       <div class="circle" style="background-color: #f94642;" />
-      <span class="nutrient-label">20g</span>
+      <span class="nutrient-label">
+        {{ nutrientDetails.nutrients.carbs }}{{ nutrientDetails.units.carbs }}
+      </span>
     </div>
     <div class="nutrient-wrapper">
       <div class="circle" style="background-color: #3177BB;" />
-      <span class="nutrient-label">16g</span>
+      <span class="nutrient-label">
+        {{ nutrientDetails.nutrients.proteins
+        }}{{ nutrientDetails.units.proteins }}
+      </span>
     </div>
     <div class="nutrient-wrapper">
       <div class="circle" style="background-color: #FDA120;" />
-      <span class="nutrient-label">6g</span>
+      <span class="nutrient-label">
+        {{ nutrientDetails.nutrients.fats }}{{ nutrientDetails.units.fats }}
+      </span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "RecipeNutrients"
+  name: "RecipeNutrients",
+  props: {
+    nutrientDetails: {
+      type: Object,
+      required: true
+    }
+  }
 };
 </script>
 

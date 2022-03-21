@@ -7,13 +7,17 @@
       <h2>Carb Manager Dev Assignment</h2>
       <p>See the README file for assignment requirements.</p>
 
-      <ul v-if="!loadingError">
+      <ul class="recipes-container" v-if="!loadingError">
         <li
-          v-for="recipe in recipes"
+          v-for="(recipe, i) in recipes"
           :key="recipe.title"
           class="premium-recipe"
         >
-          <PremiumRecipeCard :id="recipe.title" />
+          <PremiumRecipeCard
+            :recipe="recipe"
+            :user="user"
+            :liked="i % 2 === 0"
+          />
         </li>
       </ul>
       <div v-else>{{ loadingError }}</div>
@@ -33,6 +37,7 @@ export default {
 
   data: () => ({
     recipes: [],
+    user: null,
     loadingError: null
   }),
 
@@ -40,9 +45,12 @@ export default {
     try {
       const apiUrl = process.env.VUE_APP_BASE_API_URL;
       const res = await fetch(`${apiUrl}/recipes`);
+      const userRes = await fetch(`${apiUrl}/user`);
       const recipes = await res.json();
+      const user = await userRes.json();
 
-      this.recipes = recipes;
+      this.recipes = recipes.filter(recipe => recipe.isPremium);
+      this.user = user;
     } catch (err) {
       this.loadingError =
         "Something wrong happend while loading data, try refereshing the page. If the problem persists please contact the site's admins";
@@ -77,11 +85,11 @@ export default {
   margin: auto;
 }
 
-/** Remove these styles when done */
-.premium-recipe {
-  margin-top: 24px;
-  border: 2px dashed red;
-  padding: 16px;
+.recipes-container {
+  display: flex;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
+  gap: 1rem;
   list-style: none;
 }
 </style>
