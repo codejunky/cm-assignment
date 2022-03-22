@@ -6,7 +6,7 @@ export default (recipeDetails, energyUnit) => {
       recipeDetails.units.energy === "kJ"
         ? recipeDetails.energy
         : recipeDetails.energy * 4.184;
-    energyStr = `${Math.round(energy)} KJ`;
+    energyStr = `${Math.round(energy)} kJ`;
   } else {
     const energy =
       recipeDetails.units.energy === "kcal"

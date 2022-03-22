@@ -38,7 +38,7 @@
           </span>
         </div>
         <div class="info-wrapper">
-          <img src="../assets/flame.svg" alt="Clock Icon" />
+          <img src="../assets/flame.svg" alt="Flame Icon" />
           <span class="info-label">{{ energy }}</span>
         </div>
         <div class="nutrients-wrapper">
