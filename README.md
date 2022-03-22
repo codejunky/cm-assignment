@@ -89,3 +89,8 @@ yarn serve
 ```
 yarn test:unit
 ```
+
+### Reuseability answer
+
+To build the RecipeOfTheDay component, I first would extract the part containing the recipe image into a separate component and take advantage of Vue's slot feature in order to customize the different contents for the PremiumRecipeCard and RecipeOfTheDay components. 
+Other component that should be extracted and re-used or use a pre-made library for, are the star rating section and the section containing the nutrients info.
